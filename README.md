@@ -7,7 +7,12 @@ This repository serves as a **template** for the final project, providing a pre-
 - Include reusable components for **retrieval-augmented generation (RAG)**, intent routing, and database interactions.  
 - Facilitate modular design for **scalability** and **ease of customization**.  
 
-Feel free to adapt this template to meet your specific project requirements by replacing placeholder content (e.g., `company_name/`) and adding new functionality where needed.  
+### Guidelines  
+Students are expected to **follow this structure as closely as possible** when developing their projects.  
+- The predefined organization will help ensure that all required components (e.g., chatbot logic, data processing, database interactions, and Streamlit pages) are implemented systematically.  
+- Teams are encouraged to adapt and expand the template for their specific use cases, but significant deviations should be justified in the final project documentation.  
+
+This structure is not only a foundation but also a tool to ensure **best practices** in project design and implementation. By adhering to it, students can focus more on innovation and less on reorganization. Feel free to adapt this template to meet your specific project requirements by replacing placeholder content (e.g., `company_name/`) and adding new functionality where needed.  
 
 ## Repository Structure
 ```plaintext
