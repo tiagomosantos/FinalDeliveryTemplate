@@ -1,11 +1,11 @@
 # Import necessary modules and classes
-from pydantic import BaseModel, Field
 from langchain.prompts import (
     ChatPromptTemplate,
-    SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
+    SystemMessagePromptTemplate,
 )
+from pydantic import BaseModel, Field
 
 
 class PromptTemplate(BaseModel):

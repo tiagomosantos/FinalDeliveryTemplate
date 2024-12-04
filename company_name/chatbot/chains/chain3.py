@@ -1,11 +1,13 @@
 # Import necessary libraries and modules
-from langchain.schema.runnable.base import Runnable
-from langchain.output_parsers import PydanticOutputParser
-from pydantic import BaseModel, Field
-from langchain import callbacks
-from typing import List, Optional
 import json
-from company_name.chatbot.chains.base import generate_prompt_templates, PromptTemplate
+from typing import List, Optional
+
+from langchain import callbacks
+from langchain.output_parsers import PydanticOutputParser
+from langchain.schema.runnable.base import Runnable
+from pydantic import BaseModel, Field
+
+from company_name.chatbot.chains.base import PromptTemplate, generate_prompt_templates
 from company_name.data.loader import load_database_file
 
 # Define the product database as a dictionary with product categories

@@ -1,9 +1,10 @@
 # Import necessary modules and classes
 from typing import List
-from pydantic import BaseModel, Field
-from langchain_core.runnables import ConfigurableFieldSpec
+
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.messages import BaseMessage
+from langchain_core.runnables import ConfigurableFieldSpec
+from pydantic import BaseModel, Field
 
 
 class InMemoryHistory(BaseChatMessageHistory, BaseModel):

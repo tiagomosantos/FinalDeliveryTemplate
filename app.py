@@ -1,5 +1,6 @@
-from company_name import MainChatbot  # Import the chatbot class
 from dotenv import load_dotenv  # Import dotenv to load environment variables
+
+from company_name import MainChatbot  # Import the chatbot class
 
 
 def main(bot: MainChatbot):
@@ -38,9 +39,7 @@ if __name__ == "__main__":
     bot = MainChatbot(user_id="user_123", conversation_id="conversation_123")
 
     # Display instructions for ending the conversation
-    print(
-        "Bot initialized. Type 'exit' or 'quit' to end the conversation."
-    )
+    print("Bot initialized. Type 'exit' or 'quit' to end the conversation.")
 
     # Start the main interaction loop
     main(bot)

@@ -1,8 +1,8 @@
-from langchain.schema.runnable.base import Runnable
 from langchain.output_parsers import PydanticOutputParser
+from langchain.schema.runnable.base import Runnable
 from pydantic import BaseModel
-from pydantic import BaseModel
-from company_name.chatbot.chains.base import generate_prompt_templates, PromptTemplate
+
+from company_name.chatbot.chains.base import PromptTemplate, generate_prompt_templates
 
 
 class OrderId(BaseModel):

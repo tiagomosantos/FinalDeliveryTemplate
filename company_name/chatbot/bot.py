@@ -1,14 +1,13 @@
 # Import necessary classes and modules for chatbot functionality
 from typing import Dict
-from langchain_openai import ChatOpenAI
+
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_openai import ChatOpenAI
+
+from company_name.chatbot.agents.agent1 import Agent1
+from company_name.chatbot.chains.chain3 import ReasoningChain3, ResponseChain3
 from company_name.chatbot.memory import MemoryManager
 from company_name.chatbot.router.loader import load_intention_classifier
-from company_name.chatbot.chains.chain3 import (
-    ResponseChain3,
-    ReasoningChain3,
-)
-from company_name.chatbot.agents.agent1 import Agent1
 
 
 class MainChatbot:
@@ -42,9 +41,7 @@ class MainChatbot:
         }
 
         self.agent_map = {
-            "order": self.add_memory_to_runnable(
-                Agent1(llm=self.llm).agent_executor
-            )
+            "order": self.add_memory_to_runnable(Agent1(llm=self.llm).agent_executor)
         }
 
         # Load the intention classifier to determine user intents
