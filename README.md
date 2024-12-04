@@ -29,7 +29,6 @@ root/
 │   ├──  __init__.py      # Package initialization, expose bot and dev_bot.
 │   ├── chatbot/          # Chatbot modules and assets.
 │   │   ├── bot.py        # Core chatbot logic.
-│   │   ├── dev_bot.py    # Development chatbot for testing.
 │   │   ├── memory.py     # Chatbot memory.
 │   │   ├── chains/       # Custom LangChain chains.
 │   │   │   └── *.py      # Chain modules.
@@ -66,7 +65,6 @@ root/
 - **`chatbot/`**: Contains chatbot backend functionalities:
 
   - **`bot.py`**: Core chatbot logic.
-  - **`dev_bot.py`**: Standalone chatbot testing script.
   - **`memory.py`**: Implements chatbot memory for retaining context.
   - **`chains/`**: Custom LangChain chains:
     - **`*.py`**: Pipelines for querying databases, processing PDFs, or RAG.
