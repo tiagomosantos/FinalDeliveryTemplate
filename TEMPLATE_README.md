@@ -23,13 +23,12 @@ This README.md template is designed to provide a clear and structured guide for 
 
 ### 2.2 How to Run the Chatbot
 
-Provide a clear, step-by-step guide on how to launch and interact with the chatbot. Include any necessary commands, parameters, or configurations.
-
----
+## Provide a clear, step-by-step guide on how to launch and interact with the chatbot. Include any necessary commands, parameters, or configurations. Groups should provide information of an existing user so i can test the chatbot using information of that user, i will also test the registration process.
 
 ## 3. Database Schema
 
 ### 3.1 Database Overview and Schema Diagram
+
 Provide an overview of the database used by the chatbot system. Include a diagram of the database schema to visually represent the structure of tables, their relationships, and data flow. (with image)
 
 ### 3.2 Table Descriptions
@@ -93,16 +92,20 @@ The chatbot should retrieve and present information about the specific product o
 ### Methodology
 
 1. **Message Creation**:
+
    - Generate at least 50 messages per intention, totaling 400 messages. These can be either synthetic or human-generated.
    - Additionally, generate at least 25 small-talk messages related to your company and 25 off-topic messages unrelated to the company, labeled as "None."
 
 2. **Data Splitting**:
+
    - Split the dataset into training and testing sets, ensuring a balanced distribution of each intention across both sets.
 
 3. **Training the Semantic Router**:
+
    - Use the training split to train the semantic router. Report the accuracy on both the training and testing splits.
 
 4. **Post-Processing with LLM**:
+
    - If applicable, apply post-processing using an LLM to improve the accuracy of the router. Report accuracy on both the training and testing splits after post-processing.
 
 5. **Reporting Results**:
@@ -113,9 +116,12 @@ The chatbot should retrieve and present information about the specific product o
 Present the accuracy results in a table format:
 
 | Intention            | Test Inputs | Correct | Incorrect | Accuracy (%) |
-|----------------------|-------------|---------|-----------|--------------|
+| -------------------- | ----------- | ------- | --------- | ------------ |
 | Product Information  | 10          | 9       | 1         | 90%          |
 | Order Status         | 10          | 8       | 2         | 80%          |
 | Create Order         | 10          | 7       | 3         | 70%          |
 | **Average Accuracy** | 30          | 24      | 6         | 80%          |
+
+```
+
 ```
