@@ -1,3 +1,7 @@
+"""
+This file should be the entrypoint of your Streamlit App.
+"""
+
 from dotenv import load_dotenv  # Import dotenv to load environment variables
 
 from company_name import MainChatbot  # Import the chatbot class
@@ -36,7 +40,8 @@ if __name__ == "__main__":
     print("Starting the bot...")
 
     # Initialize the CustomerServiceBot with dummy user and conversation IDs
-    bot = MainChatbot(user_id="user_123", conversation_id="conversation_123")
+    bot = MainChatbot()
+    bot.user_login("user_id", "conversation_id")
 
     # Display instructions for ending the conversation
     print("Bot initialized. Type 'exit' or 'quit' to end the conversation.")

@@ -1,5 +1,5 @@
 # Import necessary classes and modules for chatbot functionality
-from typing import Dict
+from typing import Callable, Dict, Optional
 
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
@@ -15,17 +15,10 @@ class MainChatbot:
     routing them through configured reasoning and response chains.
     """
 
-    def __init__(self, user_id: str, conversation_id: str):
-        """Initialize the bot with session and language model configurations.
-
-        Args:
-            user_id: Identifier for the user.
-            conversation_id: Identifier for the conversation.
-        """
+    def __init__(self):
+        """Initialize the bot with session and language model configurations."""
         # Initialize the memory manager to manage session history
-        self.memory = MemoryManager(user_id, conversation_id)
-        self.user_id = user_id
-        self.conversation_id = conversation_id
+        self.memory = MemoryManager()
 
         # Configure the language model with specific parameters for response generation
         self.llm = ChatOpenAI(temperature=0.0, model="gpt-4o-mini")
@@ -44,8 +37,41 @@ class MainChatbot:
             "order": self.add_memory_to_runnable(Agent1(llm=self.llm).agent_executor)
         }
 
+        self.rag = self.add_memory_to_runnable(
+            RAGPipeline(
+                index_name="rag",
+                embeddings_model="text-embedding-3-small",
+                llm=self.llm,
+                memory=True,
+            ).rag_chain
+        )
+
+        # Map of intentions to their corresponding handlers
+        self.intent_handlers: Dict[Optional[str], Callable[[Dict[str, str]], str]] = {
+            "product_information": self.handle_product_information,
+            "create_order": self.handle_order_intent,
+            "order_status": self.handle_order_intent,
+            "support_information": self.handle_support_information,
+        }
+
         # Load the intention classifier to determine user intents
         self.intention_classifier = load_intention_classifier()
+
+    def user_login(self, user_id: str, conversation_id: str) -> None:
+        """Log in a user by setting the user and conversation identifiers.
+
+        Args:
+            user_id: Identifier for the user.
+            conversation_id: Identifier for the conversation.
+        """
+        self.user_id = user_id
+        self.conversation_id = conversation_id
+        self.memory_config = {
+            "configurable": {
+                "user_id": self.user_id,
+                "conversation_id": self.conversation_id,
+            }
+        }
 
     def add_memory_to_runnable(self, original_runnable):
         """Wrap a runnable with session history functionality.
@@ -139,9 +165,7 @@ class MainChatbot:
         reasoning_output = reasoning_chain.invoke(user_input)
 
         # Generate a response using the output of the reasoning chain
-        response = response_chain.invoke(
-            reasoning_output, config=self.memory.get_memory_config()
-        )
+        response = response_chain.invoke(reasoning_output, config=self.memory_config)
 
         return response.content
 
@@ -163,12 +187,56 @@ class MainChatbot:
                 "customer_id": self.user_id,
                 "customer_input": user_input["customer_input"],
             },
-            config=self.memory.get_memory_config(),
+            config=self.memory_config,
         )
 
         return response["output"]
 
-    def process_user_input(self, user_input: Dict):
+    def handle_unknown_intent(self, user_input: Dict[str, str]) -> str:
+        """Handle unknown intents by providing a chitchat response.
+
+        Args:
+            user_input: The input text from the user.
+
+        Returns:
+            The content of the response after processing through the new chain.
+        """
+        possible_intention = [
+            "Product Information",
+            "Create Order",
+            "Order Status",
+            "Support Information",
+            "Chitchat",
+        ]
+
+        chitchat_reasoning_chain, _ = self.get_chain("chitchat")
+
+        input_message = {}
+
+        input_message["customer_input"] = user_input["customer_input"]
+        input_message["possible_intentions"] = possible_intention
+        input_message["chat_history"] = self.memory.get_session_history(
+            self.user_id, self.conversation_id
+        )
+
+        reasoning_output1 = chitchat_reasoning_chain.invoke(input_message)
+
+        if reasoning_output1.chitchat:
+            print("Chitchat")
+            return self.handle_chitchat_intent(user_input)
+        else:
+            router_reasoning_chain2, _ = self.get_chain("router")
+            reasoning_output2 = router_reasoning_chain2.invoke(input_message)
+            new_intention = reasoning_output2.intent
+            print("New Intention:", new_intention)
+            new_handler = self.intent_handlers.get(new_intention)
+            return new_handler(user_input)
+
+    def save_memory(self) -> None:
+        """Save the current memory state of the bot."""
+        self.memory.save_session_history(self.user_id, self.conversation_id)
+
+    def process_user_input(self, user_input: Dict[str, str]) -> str:
         """Process user input by routing through the appropriate intention pipeline.
 
         Args:
@@ -180,18 +248,8 @@ class MainChatbot:
         # Classify the user's intent based on their input
         intention = self.get_user_intent(user_input)
 
-        print(f"Intention: {intention}")
+        print("Intent:", intention)
 
-        # Check if the intention is a string or None
-        if intention is None:
-            return "I'm sorry, I don't understand that intention."
-        else:
-            # Route the input based on the identified intention
-            if intention == "product_information":
-                response = self.handle_product_information(user_input)
-            elif intention == "create_order" or intention == "get_order":
-                response = self.handle_order_intent(user_input)
-            else:
-                # Default response for unrecognized intents
-                response = "Not implemented yet."
-            return response
+        # Route the input based on the identified intention
+        handler = self.intent_handlers.get(intention, self.handle_unknown_intent)
+        return handler(user_input)
