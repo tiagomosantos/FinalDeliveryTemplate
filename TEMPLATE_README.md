@@ -23,7 +23,7 @@ This README.md template is designed to provide a clear and structured guide for 
 
 ### 2.2 How to Run the Chatbot
 
-## Provide a clear, step-by-step guide on how to launch and interact with the chatbot. Include any necessary commands, parameters, or configurations. Groups should provide information of an existing user so i can test the chatbot using information of that user, i will also test the registration process.
+Provide a clear, step-by-step guide on how to launch and interact with the chatbot. Include any necessary commands, parameters, or configurations. Groups should provide information of an existing user so i can test the chatbot using information of that user, i will also test the registration process.
 
 ## 3. Database Schema
 
@@ -87,7 +87,7 @@ The chatbot should retrieve and present information about the specific product o
 
 ---
 
-## 6. Accuracy Testing Results
+## 6. Intention Router Accuracy Testing Results
 
 ### Methodology
 
@@ -98,7 +98,7 @@ The chatbot should retrieve and present information about the specific product o
 
 2. **Data Splitting**:
 
-   - Split the dataset into training and testing sets, ensuring a balanced distribution of each intention across both sets.
+   - Split the dataset into training and testing sets (90/10), ensuring a balanced distribution of each intention across both sets.
 
 3. **Training the Semantic Router**:
 
